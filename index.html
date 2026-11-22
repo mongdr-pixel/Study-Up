@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#23866b">
+<meta name="description" content="예비고1 학습관리 앱 STUDY UP">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>STUDY UP | 예비고1 학습관리</title>
+<style>
+:root{--mint:#23866b;--mint2:#e4f6ef;--bg:#f4faf7;--ink:#183b32;--muted:#6e827b;--line:#dcebe4;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+header{background:linear-gradient(125deg,#d8f3e7,#f1fbf6);padding:22px 18px 16px;border-radius:0 0 24px 24px}
+.brand{font-size:12px;letter-spacing:2px;font-weight:800;color:#347d67}.logo{font-size:34px;font-weight:900;letter-spacing:-1.5px;color:#17664f;margin-top:3px}.tag{font-size:13px;color:#427967;margin-top:4px}
+.today{display:flex;justify-content:space-between;align-items:end;margin-top:18px;font-size:13px}.today strong{font-size:18px}
+main{max-width:760px;margin:auto;padding:12px}
+nav{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:2px 0 13px}
+nav button,.btn,.daybtn{border:1px solid var(--line);background:white;color:var(--ink);border-radius:11px;padding:11px 8px;font-weight:650;font-size:13px}
+nav button.active,.btn.primary,.daybtn.active{background:var(--mint);border-color:var(--mint);color:white}
+section{display:none}section.active{display:block}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;box-shadow:0 2px 9px #174e3810}
+h2{font-size:19px;margin:4px 0 12px}h3{font-size:15px;margin:0 0 10px}.muted{color:var(--muted);font-size:12px}.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.progress{height:9px;background:#e8f0ec;border-radius:20px;overflow:hidden;margin:10px 0}.progress>div{height:100%;background:#39a987;width:0}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.stat{background:var(--mint2);border-radius:12px;padding:11px;text-align:center;color:#176b54}.stat b{font-size:20px;display:block}.stat span{font-size:12px}
+.schedule-row{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.schedule-row:last-child{border:0}.time{width:105px;flex-shrink:0;color:var(--muted);font-size:12px}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:12px 0}.daybtn{padding:9px 0}
+.task{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.task:last-child{border:0}.task input{width:19px;height:19px;accent-color:var(--mint)}.task .sub{font-size:10px;color:var(--muted);display:block}.task .del{margin-left:auto;border:0;background:none;color:#87968f;font-size:19px}
+input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px;background:#fbfdfc;color:var(--ink);font:inherit;margin:4px 0 10px}textarea{resize:vertical}
+.btn{cursor:pointer}.btn.tiny{padding:6px 8px;font-size:11px;white-space:nowrap}.btn.primary{width:100%}.btn.soft{background:var(--mint2);color:#176b54;border-color:var(--mint2)}
+.entry{border:1px solid var(--line);border-radius:11px;padding:11px;margin-top:9px;font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere}
+.barlabel{display:flex;justify-content:space-between;font-size:12px;margin:9px 0 4px}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:14px}
+.install{display:none;background:#176b54;color:white;border:0;border-radius:10px;padding:9px 12px;font-weight:700}
+@media(min-width:600px){nav{grid-template-columns:repeat(6,1fr)}main{padding:18px}.stats3{max-width:450px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="row"><div><div class="brand">MY HIGH SCHOOL PREPARATION</div><div class="logo">STUDY UP 🌱</div><div class="tag">오늘의 공부가 내일의 실력이 된다.</div></div><button id="installBtn" class="install">앱 설치</button></div>
+ <div class="today"><div><div class="muted">TODAY</div><strong id="todayText"></strong></div><span class="muted">예비고1 학습관리</span></div>
+</header>
+<main>
+<nav id="nav">
+ <button class="active" data-tab="home">🏠 홈</button><button data-tab="schedule">📅 시간표</button><button data-tab="check">☑ 체크</button><button data-tab="stats">📊 통계</button><button data-tab="diary">📝 학습일지</button><button data-tab="extra">🎯 목표·오답</button>
+</nav>
+<section id="home" class="active">
+ <div class="card"><div class="row"><h3>오늘의 학습 현황</h3><span id="homeDate" class="muted"></span></div><div class="row"><strong id="homePct" style="font-size:32px;color:var(--mint)">0%</strong><span id="homeCount" class="muted">0 / 0개 완료</span></div><div class="progress"><div id="homeBar"></div></div><div class="stats3"><div class="stat">📐<b id="mathDone">0</b><span>수학</span></div><div class="stat">📖<b id="engDone">0</b><span>영어</span></div><div class="stat">📚<b id="otherDone">0</b><span>주요과목</span></div></div></div>
+ <div class="card"><div class="row"><h3>오늘의 시간표</h3><button class="btn soft" data-goto="schedule">전체 보기 →</button></div><div id="homeSchedule"></div></div>
+ <div class="card"><h3>🌿 오늘의 한마디</h3><p style="font-size:13px;margin:0">완벽한 하루보다 꾸준한 하루가 더 중요하다!</p></div>
+</section>
+<section id="schedule">
+ <h2>요일별 학습 시간표</h2><p class="muted">평일 하교 16:00 · 화·목 영어학원 19:00~22:30</p><div class="days" id="days"></div><div class="card"><h3 id="scheduleTitle">월요일</h3><div id="scheduleList"></div></div>
+</section>
+<section id="check">
+ <h2>오늘의 학습 체크리스트</h2><div class="card"><div class="row"><b id="checkDate"></b><b id="checkPct" style="color:var(--mint)">0%</b></div><div class="progress"><div id="checkBar"></div></div><div id="taskList"></div><div class="row" style="margin-top:12px"><button class="btn soft" id="addTask">+ 할 일 추가</button><button class="btn soft" id="resetCheck">체크 초기화</button></div></div><p class="muted">완료한 학습은 날짜별로 자동 저장됩니다.</p>
+</section>
+<section id="stats">
+ <h2>학습 통계</h2><div class="card"><h3>이번 주 학습 달성률</h3><strong id="weekPct" style="font-size:32px;color:var(--mint)">0%</strong><div class="progress"><div id="weekBar"></div></div><p id="weekSummary" class="muted"></p></div><div class="card"><h3>요일별 달성률</h3><div id="weekDays"></div></div><div class="card"><h3>과목별 완료 현황</h3><div id="subjectStats"></div></div>
+</section>
+<section id="diary">
+ <h2>나의 학습일지</h2><div class="card"><label class="muted">학습 날짜</label><input type="date" id="diaryDate"><label class="muted">오늘 공부한 내용</label><textarea id="diaryContent" rows="3" placeholder="과목과 단원을 기록하세요."></textarea><label class="muted">오늘 잘한 점</label><textarea id="diaryGood" rows="2" placeholder="잘한 점을 기록하세요."></textarea><label class="muted">보완할 점 및 내일 목표</label><textarea id="diaryNext" rows="2" placeholder="내일 목표를 기록하세요."></textarea><button class="btn primary" id="saveDiary">학습일지 저장</button></div><div class="card"><h3>지난 학습일지</h3><div id="diaryHistory"></div></div>
+</section>
+<section id="extra">
+ <h2>목표관리 · 오답노트</h2><div class="card"><h3>🎯 월별 학습 목표</h3><input type="month" id="goalMonth"><input id="goalInput" placeholder="예: 고등수학(상) 1단원 완료"><button class="btn primary" id="addGoal">목표 추가</button><div id="goalList"></div></div>
+ <div class="card"><h3>✏️ 오답노트</h3><label class="muted">과목</label><select id="wrongSubject"><option>수학</option><option>영어</option><option>국어</option><option>과학</option><option>사회</option></select><input id="wrongUnit" placeholder="단원 / 문제 번호"><textarea id="wrongReason" rows="3" placeholder="틀린 이유와 올바른 풀이를 기록하세요."></textarea><button class="btn primary" id="addWrong">오답 저장</button><div id="wrongList"></div></div>
+ <div class="card"><h3>데이터 백업·복원</h3><p class="muted">기기를 바꾸거나 브라우저 데이터를 지우기 전에 백업 파일을 저장하세요.</p><button class="btn soft" id="exportData">백업 파일 내려받기</button><label class="muted" style="display:block;margin-top:12px">백업 파일 복원</label><input type="file" id="importFile" accept="application/json"></div>
+</section>
+<footer>STUDY UP · 나의 공부 습관 만들기 🌱<br>기록은 이 기기의 브라우저에 저장됩니다.</footer>
+</main>
+<script src="./app.js"></script>
+</body></html>
